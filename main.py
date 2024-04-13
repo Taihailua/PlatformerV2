@@ -64,7 +64,7 @@ class Game:
         self.picture = pygame.transform.scale(self.picture, (320, 240))
 
     def load_level(self, map_id):
-        self.tilemap.load('data/maps/' + str(map_id) + '.json')
+        self.tilemap.load('PlatformerV2/data/maps/' + str(map_id) + '.json')
         self.leaf_spawners = []
         for tree in self.tilemap.extract([('large_decor', 2)], keep=True):
             # taking the position of the tile and looking for the area of the tree image that makes sense to spawn leaf
@@ -111,7 +111,7 @@ class Game:
                 if self.transition > 30:
                     # do this instead of += 1 to prevent the game from crash because of not enough map to use :)
                     # capping the number of level by using min
-                    self.level = min(self.level + 1, len(os.listdir('data/maps')) - 1)
+                    self.level = min(self.level + 1, len(os.listdir('PlatformerV2/data/maps')) - 1)
                     self.load_level(self.level)
             if self.transition < 0:
                 self.transition += 1
@@ -238,7 +238,7 @@ THE SAME GOES FOR SELF.scroll[1]
                         self.movement[0] = True
                     if event.key == pygame.K_RIGHT:
                         self.movement[1] = True
-                    if event.key == pygame.K_UP:
+                    if event.key == pygame.K_SPACE:
                         self.player.jump()
                     if event.key == pygame.K_x:
                         self.player.dash()
@@ -276,7 +276,7 @@ class StartMenu:
         self.font = pygame.font.Font(None, 36)  # Define font for menu text
         self.selected_option = 0  # Keep track of currently selected option
         self.options = ["Start", "Quit"]  # Menu options
-        self.background = pygame.image.load("menu_background.png")  # Load background image
+        self.background = pygame.image.load("PlatformerV2/menu_background.png")  # Load background image
         # Scale the background image to match the size of the display
         self.background = pygame.transform.scale(self.background, (screen.get_width(), screen.get_height()))
 
@@ -311,10 +311,14 @@ class StartMenu:
 
 def main():
     pygame.init()
+    pygame.mixer.init()  # Initialize the mixer
+    pygame.mixer.music.load('PlatformerV2/data/music.wav')  # Load the background music. Replace 'background_music.mp3' with the path to your music file.
+    pygame.mixer.music.play(-1)  # Play the music. -1 means loop indefinitely.
+
     screen = pygame.display.set_mode((900, 506))  # Set screen size to match the background image
     pygame.display.set_caption('Ninja Game')
     # Load and set icon
-    icon = pygame.image.load('icon.png')  # Replace 'game_icon.png' with the path to your icon image
+    icon = pygame.image.load('PlatformerV2/icon.png')  # Replace 'game_icon.png' with the path to your icon image
     pygame.display.set_icon(icon)
     clock = pygame.time.Clock()
     start_menu = StartMenu(screen)
@@ -328,6 +332,14 @@ def main():
         clock.tick(60)
 
     # Start the game
+    font = pygame.font.Font(None, 36)  # Create a font object. None means the default font, and 36 is the size.
+    text = font.render("Defeat all enemies!", True, (255, 255, 255))  # Create a Surface with the text. The second argument is anti-aliasing, and the third is the color (white).
+    
+    screen.fill((0, 0, 0))  # Fill the screen with black
+    screen.blit(text, (450 - text.get_width() // 2, 253 - text.get_height() // 2))  # Display the text at the center of the screen
+    pygame.display.update()  # Update the display
+    pygame.time.delay(1000)  # Wait for 3000 milliseconds (3 seconds)
+
     Game().run()
 
 

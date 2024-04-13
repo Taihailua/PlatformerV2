@@ -2,7 +2,7 @@ import os
 
 import pygame
 # global variable represents path to folder contain the img
-BASE_IMG_PATH = 'data/images/'
+BASE_IMG_PATH = 'PlatformerV2/data/images/'
 
 
 def load_image(path):
