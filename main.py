@@ -1,6 +1,7 @@
 import os
 import random
 import math
+import time
 import pygame
 import sys
 
@@ -106,17 +107,25 @@ class Game:
             if not len(self.enemies):
                 self.transition += 1
                 if self.transition > 30:
-                    # do this instead of += 1 to prevent the game from crash because of not enough map to use :)
-                    # capping the number of level by using min
-                    self.level = min(self.level + 1, len(os.listdir('PlatformerV2/data/maps')) - 1)
-                    font = pygame.font.Font(None, 36)  # Create a font object. None means the default font, and 36 is the size.
-                    text = font.render("Pass!", True, (255, 255, 255))  # Create a Surface with the text. The second argument is anti-aliasing, and the third is the color (white).
+                    self.level = min(self.level + 1, len(os.listdir('PlatformerV2/data/maps')))
+                    font = pygame.font.Font(None, 36)
+            
+                    # Check if the level has reached the limit
+                    if self.level == len(os.listdir('PlatformerV2/data/maps')):
+                        text = font.render("Victory!", True, (255, 255, 255))
+                    else:
+                        text = font.render("Pass!", True, (255, 255, 255))
+            
                     screen = pygame.display.set_mode((640, 480))
-                    screen.fill((0, 0, 0))  # Fill the screen with black
-                    screen.blit(text, (320 - text.get_width() // 2, 240 - text.get_height() // 2))  # Display the text at the center of the screen
-                    pygame.display.update()  # Update the display
-                    pygame.time.delay(1000)  # Wait for 3000 milliseconds (3 seconds)
-
+                    screen.fill((0, 0, 0))
+                    screen.blit(text, (320 - text.get_width() // 2, 240 - text.get_height() // 2))
+                    pygame.display.update()
+                    if self.level == len(os.listdir('PlatformerV2/data/maps')):
+                        time.sleep(2)
+                        break
+                    else:
+                        pygame.time.delay(1000)
+            
                     self.load_level(self.level)
             if self.transition < 0:
                 self.transition += 1
