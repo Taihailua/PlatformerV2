@@ -1,10 +1,7 @@
 import os
 import random
-
 import math
-
 import pygame
-
 import sys
 
 from scripts.utils import load_image, load_images, Animation
@@ -112,6 +109,14 @@ class Game:
                     # do this instead of += 1 to prevent the game from crash because of not enough map to use :)
                     # capping the number of level by using min
                     self.level = min(self.level + 1, len(os.listdir('PlatformerV2/data/maps')) - 1)
+                    font = pygame.font.Font(None, 36)  # Create a font object. None means the default font, and 36 is the size.
+                    text = font.render("Pass!", True, (255, 255, 255))  # Create a Surface with the text. The second argument is anti-aliasing, and the third is the color (white).
+                    screen = pygame.display.set_mode((640, 480))
+                    screen.fill((0, 0, 0))  # Fill the screen with black
+                    screen.blit(text, (320 - text.get_width() // 2, 240 - text.get_height() // 2))  # Display the text at the center of the screen
+                    pygame.display.update()  # Update the display
+                    pygame.time.delay(1000)  # Wait for 3000 milliseconds (3 seconds)
+
                     self.load_level(self.level)
             if self.transition < 0:
                 self.transition += 1
@@ -124,15 +129,15 @@ class Game:
                 if self.dead > 40:
                     self.load_level(self.level)
             """
-self.scroll[0]:
-self.player.rect().centerx: This gives the x-coordinate of the center of the player's sprite.
-self.display.get_width() / 2: This gives half of the width of the display window, representing the center of the screen 
-horizontally.
-self.scroll[0]: This represents the current horizontal position of the camera.
-So, (self.player.rect().centerx - self.display.get_width() / 2 - self.scroll[0]) calculates the difference between the 
-center of the player's sprite and the center of the screen, adjusted by the current horizontal position of the camera.
-THE SAME GOES FOR SELF.scroll[1]
-"""
+                self.scroll[0]:
+                self.player.rect().centerx: This gives the x-coordinate of the center of the player's sprite.
+                self.display.get_width() / 2: This gives half of the width of the display window, representing the center of the screen 
+                horizontally.
+                self.scroll[0]: This represents the current horizontal position of the camera.
+                So, (self.player.rect().centerx - self.display.get_width() / 2 - self.scroll[0]) calculates the difference between the 
+                center of the player's sprite and the center of the screen, adjusted by the current horizontal position of the camera.
+                THE SAME GOES FOR SELF.scroll[1]
+            """
             # set camera for player
             self.scroll[0] += (self.player.rect().centerx - self.display.get_width() / 2 - self.scroll[0]) / 30
             self.scroll[1] += (self.player.rect().centery - self.display.get_height() / 2 - self.scroll[1]) / 30

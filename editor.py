@@ -1,7 +1,5 @@
 import pygame
-
 import sys
-
 from scripts.utils import load_images
 from scripts.tilemap import Tilemap
 
@@ -33,7 +31,7 @@ class Editor:
         self.tilemap = Tilemap(self, tile_size=16)
 
         try:
-            self.tilemap.load('map.json')
+            self.tilemap.load('PlatformerV2/data/maps/0.json')
         except FileNotFoundError:
             pass
 
@@ -191,7 +189,7 @@ class Editor:
                     if event.key == pygame.K_t:
                         self.tilemap.autotile()
                     if event.key == pygame.K_o:
-                        self.tilemap.save('map.json')
+                        self.tilemap.save('PlatformerV2/data/maps/0.json')
                     if event.key == pygame.K_LSHIFT:
                         self.shift = True
                 if event.type == pygame.KEYUP:  # Set event when releasing a key
